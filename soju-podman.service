@@ -1,0 +1,18 @@
+[Unit]
+Description=Soju container
+Documentation=man:podman-generate-systemd(1)
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=/run/user/1002/containers
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/sh -c 'exec podman run -d --rm --name=soju --hostname="$(hostname --fqdn)" --user=0:0 --userns=keep-id:uid=100,gid=102 -p 46697:6697 -v ~/.config/soju:/var/lib/soju:Z -v ~/.local/share/soju/logs:/var/lib/soju/logs:Z -v ~/.local/share/soju/uploads:/home/soju/uploads:Z -v "$(readlink --canonicalize /etc/letsencrypt/live/gurdasani.com-0001/fullchain.pem)":/etc/ssl/certs/soju/soju.crt -v "$(readlink --canonicalize /etc/letsencrypt/live/gurdasani.com-0001/privkey.pem)":/etc/ssl/certs/soju/soju.key gurdasani.com/soju/soju:latest'
+ExecStart=/usr/bin/podman start soju
+ExecStop=/usr/bin/podman stop -t 10 soju
+Type=forking
+
+[Install]
+WantedBy=default.target
