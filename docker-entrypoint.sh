@@ -2,10 +2,13 @@
 
 set -eux
 
-if ! [ -r /etc/ssl/certs/soju/fullchain.pem ] || ! [ -r /etc/ssl/certs/soju/privkey.pem ]
+if ! su - -c '[ -r /etc/ssl/certs/soju/fullchain.pem ] && [ -r /etc/ssl/certs/soju/privkey.pem ]' soju
 then
     echo Cannot find Soju certificate and/or key. 1>&2
-    ls -lRa /etc/ssl/certs/soju /etc/ssl/archive 1>&2
+    set +e
+    su - -c 'ls -lRa /etc/ssl/certs/soju /etc/ssl/archive 1>&2' soju
+    set -e
+    sleep 60
     exit 1
 fi
 
