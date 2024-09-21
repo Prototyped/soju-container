@@ -2,7 +2,7 @@
 
 set -eux
 
-if ! [ -r /etc/ssl/certs/soju/soju.crt ] || ! [ -r /etc/ssl/certs/soju/soju.key ]
+if ! [ -r /etc/ssl/certs/soju/fullchain.pem ] || ! [ -r /etc/ssl/certs/soju/privkey.pem ]
 then
     echo Cannot find Soju certificate and/or key. 1>&2
     ls -la /etc/ssl/certs/soju 1>&2
