@@ -18,11 +18,12 @@ RUN set -ex; \
     apt -y clean; \
     rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*; \
     usermod -s /bin/sh -c Soju -U soju; \
-    mkdir -p /var/lib/soju/logs /etc/ssl/certs/soju /home/soju/uploads /etc/soju /run/soju; \
-    chown -R soju:soju /etc/ssl/certs/soju /home/soju/uploads /run/soju
+    mkdir -p /var/lib/soju/logs /etc/ssl/certs/soju /etc/ssl/archive /home/soju/uploads /etc/soju /run/soju; \
+    chown -R soju:soju /etc/ssl/certs/soju /etc/ssl/archive /home/soju/uploads /run/soju
 
 VOLUME /var/lib/soju
 VOLUME /etc/ssl/certs/soju
+VOLUME /etc/ssl/archive
 VOLUME /home/soju/uploads
 
 COPY --chmod=0755 docker-entrypoint.sh /docker-entrypoint.sh
